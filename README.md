@@ -1,23 +1,50 @@
-# OPA on AKs
+# Open Policy Agent on AKS
 
-## Terraform
+The purpose of this repository is to use [Open Policy Agent](https://www.openpolicyagent.org) definitons in combination with Azure Kubernetes Cluster.
 
-## Preparer env
+## Policy
 
-First you need to create a file `env.tfvars` where all variables are defined.
+To test how OPA is working in AKS we try to apply a policy which requires pod to have a label attached to pod definition. If label does not exist, pods should be rejected when applied to cluster.
 
-### Run plan & apply
+## Deploy policy
 
-Use `make` to run terraform commands
+Terraform is used to deploy policy definitions to Azure managed cluster.
+
+### Prepare env
+
+In order to run terraform you first need to create a file `env.tfvars` within `terraform` folder. Here you need to define values for varibales (see `varibales.tf`) that are used for the deployment
+
+### Plan & apply policy
+
+You can use `make` to run `terraform` commands
 
 ```bash
-cd terraform
+# Terraform init
+make init
 
-# Plan
+# Terraform plan
 make plan
 
-# Apply
+# Terraform apply
 make apply
+```
+
+## Test policy
+
+To test if the policy is working you can use the `busybox` pod under `app`.
+
+When trying to apply the pod to your test cluster
+
+```bash
+kubectl -n opa-test apply -f app/busybox.yaml
+```
+
+it should result in an error similar to the following when policy is working correctly.
+
+```bash
+Error from server ([azurepolicy-require-opa-label-5cbc81520134ce86ea47] you must provide labels: {"opa-test"}):
+error when creating "busybox.yaml": admission webhook "validation.gatekeeper.sh" denied the request:
+[azurepolicy-require-opa-label-5cbc81520134ce86ea47] you must provide labels: {"opa-test"}
 ```
 
 ## Links
