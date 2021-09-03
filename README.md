@@ -8,7 +8,7 @@ To test how OPA is working in AKS we try to apply a policy which require pods to
 
 ## Deploy policy
 
-Terraform is used to deploy policy definitions to Azure managed cluster.
+Terraform is used to deploy policy definitions to Azure managed cluster. It assumes that a cluster already exists.
 
 ### Prepare env
 
