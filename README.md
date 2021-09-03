@@ -31,20 +31,43 @@ make apply
 
 ## Test policy
 
-To test if the policy is working you can use the `busybox` pod under `app`.
+### Apply invalid pod
 
-When trying to apply the pod to your test cluster
+To test if the policy is working you can use the `busybox` pod under `app`. When trying to apply the pod to your cluster it should result in an error when the policy is working corretly
 
 ```bash
+# First create namespace for test
+kubectl create ns opa-test
+
+# Second try to apply busybox to created ns
 kubectl -n opa-test apply -f app/busybox.yaml
 ```
 
-it should result in an error similar to the following when policy is working correctly.
+After running this, you should see an error similar to the following.
 
 ```bash
 Error from server ([azurepolicy-require-opa-label-5cbc81520134ce86ea47] you must provide labels: {"opa-test"}):
 error when creating "busybox.yaml": admission webhook "validation.gatekeeper.sh" denied the request:
 [azurepolicy-require-opa-label-5cbc81520134ce86ea47] you must provide labels: {"opa-test"}
+```
+
+### Fix pod definition
+
+Adding the `opa-test` label to pod definition like the following should fix the error.
+
+```yaml
+metadata:
+  name: busybox-opa
+  namespace: opa-test
+  labels:
+    app: busybox-opa
+    opa-test: hooray
+```
+
+After again running `kubectl -n opa-test apply -f app/busybox.yaml` you should the following message
+
+```bash
+pod/busybox-opa created
 ```
 
 ## Links
