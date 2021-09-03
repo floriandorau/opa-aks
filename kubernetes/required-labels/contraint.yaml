@@ -9,4 +9,4 @@ spec:
         kinds: ["Pod"]
     namespace: ["opa-test"]
   parameters:
-    labels: ["opa-test"]
+    labels: { { .Values.labels } }

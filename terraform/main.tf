@@ -11,10 +11,25 @@ data "azurerm_kubernetes_cluster" "aks_cluster" {
 }
 
 resource "azurerm_policy_definition" "policy" {
-  name        = "require-label-on-pods"
-  policy_type = "Custom"
-  mode        = "Microsoft.Kubernetes.Data"
+  name         = "require-label-on-pods"
+  policy_type  = "Custom"
+  mode         = "Microsoft.Kubernetes.Data"
   display_name = "Required labeld pods"
+
+  parameters = <<PARAMETERS
+    {
+        "requiredLabels": {
+            "type": "Array",
+            "metadata":{
+                "description":"The list of required labels.",
+                "displayName":"Required locations"                
+            },
+            "defaultValue":[
+                "opa-test"
+            ]
+        }
+    }
+  PARAMETERS
 
   policy_rule = <<POLICY_RULE
     {
@@ -29,8 +44,11 @@ resource "azurerm_policy_definition" "policy" {
         "then":{
             "effect":"Deny",
             "details":{
-                "constraintTemplate":"https://raw.githubusercontent.com/floriandorau/opa-aks/main/kubernetes/required-labels/template.yaml,
-                "constraint":"https://raw.githubusercontent.com/floriandorau/opa-aks/main/kubernetes/required-labels/contraint.yaml
+                "constraintTemplate":"https://raw.githubusercontent.com/floriandorau/opa-aks/main/kubernetes/required-labels/template.yaml",
+                "constraint":"https://raw.githubusercontent.com/floriandorau/opa-aks/main/kubernetes/required-labels/contraint.yaml",
+                "values": {
+                    "labels": "[parameters('requiredLabels')]"
+                }
             }
         }
     }
