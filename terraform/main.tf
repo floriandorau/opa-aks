@@ -14,7 +14,7 @@ resource "azurerm_policy_definition" "policy" {
   name         = "require-label-on-pods"
   policy_type  = "Custom"
   mode         = "Microsoft.Kubernetes.Data"
-  display_name = "Required labeld pods"
+  display_name = "Required labeled pods"
 
   parameters = <<PARAMETERS
     {
@@ -22,7 +22,7 @@ resource "azurerm_policy_definition" "policy" {
             "type": "Array",
             "metadata":{
                 "description":"The list of required labels.",
-                "displayName":"Required locations"                
+                "displayName":"Required labels"                
             },
             "defaultValue":[
                 "opa-test"
@@ -57,7 +57,7 @@ resource "azurerm_policy_definition" "policy" {
 }
 
 resource "azurerm_resource_policy_assignment" "policy_assignment" {
-  name                 = "aks-policy-assignment"
+  name                 = "require-labeled-pods"
   resource_id          = data.azurerm_kubernetes_cluster.aks_cluster.id
   policy_definition_id = azurerm_policy_definition.policy.id
 }
