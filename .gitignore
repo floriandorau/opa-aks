@@ -1,0 +1,5 @@
+# Ignore terraform related files
+.terraform
+.terraform.lock.hcl
+env.tfvars
+*.tfplan
