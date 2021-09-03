@@ -49,4 +49,6 @@ error when creating "busybox.yaml": admission webhook "validation.gatekeeper.sh"
 
 ## Links
 
+- <https://github.com/open-policy-agent/frameworks/tree/master/constraint>
 - <https://docs.microsoft.com/en-ie/azure/governance/policy/concepts/policy-for-kubernetes>
+- <https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/policy_definition>
