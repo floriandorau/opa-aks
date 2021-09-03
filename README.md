@@ -4,7 +4,7 @@ The purpose of this repository is to use [Open Policy Agent](https://www.openpol
 
 ## Policy
 
-To test how OPA is working in AKS we try to apply a policy which requires pod to have a label attached to pod definition. If label does not exist, pods should be rejected when applied to cluster.
+To test how OPA is working in AKS we try to apply a policy which require pods to have a specific labels attached. If these labels do not exist, pods should be rejected when applied to cluster.
 
 ## Deploy policy
 
